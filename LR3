@@ -1,0 +1,112 @@
+#include <string>
+#include <windows.h>
+using namespace std;
+
+void dlina(char *L)
+{
+    int size = 0;                   
+    size = strlen(L);               
+    cout << "\nДлина строки -> " << size << endl;
+}
+
+void prisvaivanie(char *L, char *Z)
+{
+    for (int i = 0; i < 255; i++)
+    {
+        L[i] = Z[i];
+    }
+    cout << "Cтрока 1 : " << L << endl;
+}
+
+void scep(char* L, char* Z)
+{
+    strcat_s(L,255,Z);
+    cout << "Cцепленные строки : " << L<<endl;
+}
+
+void podstroka(char* L)
+{
+    int pos, len;
+    cout << "Подстрока с "; cin >> pos; cout << "по "; cin >> len; cout  << "символ" << endl;
+    for (int i = pos - 1; i < len; i++)
+    {
+        cout << L[i];
+    }
+    cout << endl;
+}
+
+int pos(char* L, char* Z, int n)
+{
+    int i, j; // Счетчики для циклов
+    int lenC, lenS; // Длины строк
+
+    //Находим размеры строки исходника и искомого
+    for (lenC = 0; Z[lenC]; lenC++);
+    for (lenS = 0; L[lenS]; lenS++);
+
+    for (i = 0; i <= lenS - lenC; i++) // Пока есть возможность поиска
+    {
+        for (j = 0; L[i + j] == Z[j]; j++); // Проверяем совпадение посимвольно
+        // Если посимвольно совпадает по длине искомого
+        // Вернем из функции номер ячейки, откуда начинается совпадение
+        // Учитывать 0-терминатор  ( '\0' )
+        if (j - lenC == 1 && i == lenS - lenC && !(n - 1)) return i;
+        if (j == lenC)
+            if (n - 1) n--;
+            else return i;
+    }
+    //Иначе вернем -1 как результат отсутствия подстроки
+    return -1;
+}
+
+int main()
+{
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
+    setlocale(LC_ALL, "Rus");
+    char *L= new char[256];
+    char Z[256];
+    cout << "Введите строку 1 : "; 
+    cin.getline(L, 256);
+    cout << endl;
+    cout << "1. Определение длины строки." << endl;
+    cout << "2. Присваивание строк." << endl;
+    cout << "3. Конкатенация (сцепление) строк." << endl;
+    cout << "4. Выделение подстроки." << endl;
+    cout << "5. Поиск вхождения." << endl;
+    cout << "6. Выход" << endl << endl;
+    int number;
+    cout << "Действие : "; cin >> number;
+    switch (number)
+    {
+    case 1:
+        dlina(L);
+        break;
+    case 2:
+        cout << "Строка котору хотите присвоить : ";
+        cin >> Z;
+        prisvaivanie(L,Z);
+        break;
+    case 3:
+        cout << "Строка котору хотите сцепить : ";
+        cin >> Z;
+        scep(L, Z);
+        break;
+    case 4:
+        podstroka(L);
+        break;
+    case 5:
+        cout << "Подстрока : ";
+        cin >> Z;
+        int n = 0;
+        for (int i = 1; n != -1; i++)
+        {
+            n = pos(L, Z, i);
+            if (n >= 0)
+            cout <<"Точка вхождения : символ номер " << n+1 << endl;
+        }
+        break;
+    }
+    system("pause");
+    return 0;
+}
