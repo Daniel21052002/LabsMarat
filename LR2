@@ -1,0 +1,55 @@
+#include <iostream> 
+#include <string>
+#include <cstdlib>
+#include <cstring>
+#include <time.h>
+#include <stdio.h>          
+
+
+using namespace std;
+
+int main()
+{
+    struct tm tm1, tm2;
+    time_t t1, t2;
+
+    /*memset(&tm1, 0, sizeof(struct tm));
+    memset(&tm2, 0, sizeof(struct tm));*/
+    tm1.tm_year = 90; 
+    tm1.tm_mon = 1; 
+    tm1.tm_mday = 7;
+
+    tm2.tm_year = 95;
+    tm2.tm_mon = 6;
+    tm2.tm_mday = 21;
+
+    char TIME1[50];
+    char TIME2[50];
+
+    strftime(TIME1, sizeof(struct tm), "%d.%b.%Y", &tm1);
+    strftime(TIME2, sizeof(struct tm), "%d.%b.%Y", &tm2);
+
+    /*t1 = mktime(&tm1);
+    t2 = mktime(&tm2);*/
+
+    cout << TIME1 << endl;
+    cout << TIME2 << endl;
+
+    int d1 = tm1.tm_mday + tm1.tm_mon * 31 + tm1.tm_year * 365;
+    int d2 = tm2.tm_mday + tm2.tm_mon * 31 + tm2.tm_year * 365;
+
+    if (d1 > d2)
+    {
+        cout << "t1 > t2" << endl;
+    }
+    else if (d1 == d2)
+    {
+        cout << "t1 == t2" << endl;
+    }
+    else if (d1 < d2)
+    {
+        cout << "t1 < t2" << endl;
+    }
+
+    return 0;
+}
